@@ -36,8 +36,8 @@ FourWheelDrive::FourWheelDrive(Constant *Blah) :
 	LeftDriveEncoder = new Encoder(constants->Get("LeftEncoderA"), constants->Get("LeftEncoderB"));
 	RightDriveEncoder = new Encoder(constants->Get("RightEncoderA"), constants->Get("RightEncoderB"));
 	ShifterTest = false;
-	Shifter = new Solenoid(constants->Get("ShifterSolenoid"));
-	Shifter2 = new Solenoid(constants->Get("ShifterSolenoid2")); // CAT REMOVE COMMENT IF DOUBLE SOLENOID
+	Shifter = new Solenoid(1, constants->Get("ShifterSolenoid"));
+	Shifter2 = new Solenoid(1, constants->Get("ShifterSolenoid2")); // CAT REMOVE COMMENT IF DOUBLE SOLENOID
 
 
 
