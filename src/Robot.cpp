@@ -12,6 +12,7 @@
 #include <SmartDashboard/SmartDashboard.h>
 #include "Subsystems/FourWheelDrive.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/NavxCode.h"
 #include <Constant.h>
 #include <Joystick.h>
 #include <TalonSRX.h>
@@ -30,6 +31,7 @@ private:
 	Constant *constant;
 	FourWheelDrive *Drive;
 	Shooter *ShootingShooter;
+	NavxCode *Navx;
 
 	frc::CameraServer* C1= CameraServer::GetInstance();
 public:
@@ -42,6 +44,7 @@ public:
 		OperatorControl = new Joystick(3);
 		Drive = new FourWheelDrive (constant);
 		ShootingShooter = new Shooter(constant);
+		Navx = new NavxCode(constant);
 
 		// Create a Cameraserver Object
 		//C1 = new CameraServer::GetInstance();
@@ -122,6 +125,7 @@ public:
 						OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
 						OperatorControl->GetRawButton(constant->Get("HighShiftButton")),
 						OperatorControl->GetRawButton(constant->Get("LowShiftButton")));
+		Navx->Gyro();
 
 
 	}
