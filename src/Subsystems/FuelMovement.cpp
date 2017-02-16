@@ -6,11 +6,11 @@
  */
 
 #include "WPILib.h"
-#include <Subsystems/GearServo.h>
+#include <Subsystems/FuelMovement.h>
 
 
 FuelMovement::FuelMovement(Constant *Amy) :
-Subsystem("FuelMoovement")
+Subsystem("FuelMovement")
 {
 	constants = Amy;
 	FuelMovementSC = new VictorSP(constants->Get("FuelMovementMotor")); //PWM Channel

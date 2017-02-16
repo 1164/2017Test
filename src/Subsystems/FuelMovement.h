@@ -19,11 +19,8 @@ private:
 	Constant *constants;
 	VictorSP *FuelMovementSC;
 
-
 public:
     FuelMovement(Constant *Amy);
-
-
 
 };
 
