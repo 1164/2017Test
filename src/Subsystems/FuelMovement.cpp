@@ -9,10 +9,10 @@
 #include <Subsystems/GearServo.h>
 
 
-FuelMovement::FuelMovement(Constant *Ethel) :
+FuelMovement::FuelMovement(Constant *Amy) :
 Subsystem("FuelMoovement")
 {
-	constants = Ethel;
+	constants = Amy;
 	FuelMovementSC = new VictorSP(constants->Get("FuelMovementMotor")); //PWM Channel
 
 } // of FuelMovement Constructor

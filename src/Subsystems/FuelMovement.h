@@ -21,7 +21,7 @@ private:
 
 
 public:
-    FuelMovement(Constant *Ethel);
+    FuelMovement(Constant *Amy);
 
 
 
