@@ -14,8 +14,7 @@ NavxCode::NavxCode(Constant *Lucy) :
 Subsystem("NavxCode")
 {
 	constants = Lucy;
-}
-void NavxCode::Gyro(){
+
 	try {
 				/***********************************************************************
 				 * navX-MXP:
@@ -39,7 +38,20 @@ void NavxCode::Gyro(){
 	        }
 	      //  autoBalanceXMode = false;
 	        //autoBalanceYMode = false;
-	    }
+} // of NavxCode Constructor
+
+void NavxCode::Gyro(){
+
+	double pitchAngleDegrees = ahrs->GetPitch();
+    double rollAngleDegrees = ahrs->GetRoll();
+
+    char *GyroString = new char[255];
+
+    sprintf(GyroString, "Gyro value: %f %f\n", pitchAngleDegrees,rollAngleDegrees  ); //outputs Encoder reading
+    					DriverStation::GetInstance().ReportError(GyroString); // funnels Encoder reading into driver station
+
+
+} // of Gyro
 
 
 
