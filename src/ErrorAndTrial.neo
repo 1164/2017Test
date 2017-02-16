@@ -9,6 +9,18 @@ DIBreakbeam			1
 
 VictorTest1			1
 
+ServoLChannel		5
+ServoRChannel		6
+ServoLSet			5
+ServoRSet			6
+ServoLReset			5
+ServoRReset			6
+
+RobotLifterMotor	4
+ShoooterMotor		5
+FuelMovementMotor	6
+
+
 frontRightDrive		3
 frontLeftDrive 		1
 backRightDrive 		2

@@ -7,7 +7,7 @@
 
 #ifndef SRC_SUBSYSTEMS_SHOOTER_H_
 #define SRC_SUBSYSTEMS_SHOOTER_H_
-#include <TalonSRX.h>
+#include <VictorSP.h>
 #include <Constant.h>
 #include <DigitalInput.h>
 #include <iostream>
@@ -15,7 +15,7 @@
 class Shooter: public Subsystem{
 private:
 
-	TalonSRX *testmotor;
+	VictorSP *shootermotor;
 	Constant *constant;
 	DigitalInput *Breakbeam;
 
