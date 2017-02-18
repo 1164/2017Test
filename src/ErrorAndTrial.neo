@@ -1,13 +1,13 @@
+TestMode			1
+
 MotorTest			3
 
-ControllerSpark0	0
 
-SolenoidCAN			12
-PneumaticChannel	1
+DriveSoleCh			12
+PCMCanID			1
+ShooterPlungerFw	0
+ShooterPlungerRv	1
 
-DIBreakbeam			1
-
-VictorTest1			1
 
 ServoLChannel		5
 ServoRChannel		6
@@ -17,7 +17,7 @@ ServoLReset			5
 ServoRReset			6
 
 RobotLifterMotor	4
-ShoooterMotor		5
+ShooterMotor		5
 FuelMovementMotor	6
 
 
@@ -55,4 +55,11 @@ HighGearXGain		-0.5
 LowGearYGain		1
 LowGearXGain		-0.5
 
-allNumsNeedToBeReplaced		0
+ShooterMotorSpeed	0.9
+ShootOnButton		2
+ShootOffButton		4
+ShootTrigButton		8
+
+
+ShootEncA			0
+ShootEncB			1

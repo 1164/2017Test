@@ -28,6 +28,7 @@ private:
 	std::string autoSelected;
 
 	Joystick *OperatorControl;
+	Joystick *ShooterControl;
 	Constant *constant;
 	FourWheelDrive *Drive;
 	Shooter *ShootingShooter;
@@ -41,7 +42,8 @@ public:
 		frc::SmartDashboard::PutData("Auto Modes", &chooser);
 
 		constant = new Constant();
-		OperatorControl = new Joystick(3);
+		OperatorControl = new Joystick(0);
+		ShooterControl = new Joystick(1);
 		Drive = new FourWheelDrive (constant);
 		ShootingShooter = new Shooter(constant);
 		Navx = new NavxCode(constant);
@@ -98,8 +100,6 @@ public:
 								false);*/
 
 
-	    // now work on the pneumatic subsystem
-		Drive->PneumaticSolenoid( OperatorControl->GetRawButton(6));
 
 		// Now work on the arcade motor testing
 		/*int value;
@@ -120,6 +120,10 @@ public:
 		}
 		*/
 		//Drive->arcadeDrive(value, 0.0, false, false);
+
+		ShootingShooter->update(ShooterControl->GetRawButton(constant->Get("ShootOnButton")),
+								ShooterControl->GetRawButton(constant->Get("ShootOffButton")),
+								ShooterControl->GetRawButton(constant->Get("ShootTrigButton")));
 
 		Drive->arcadeDrive(OperatorControl->GetAxis((Joystick::AxisType)constant->Get("MotorAxisY")),
 						OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
@@ -153,9 +157,11 @@ public:
 					DriverStation::GetInstance().ReportError(Breakbeam); // funnels breakbeam value into driver station
 		*/
 	}
+
+
 	void DisabledPeriodic()
-		{
-		char *EncoderTest = new char[255];
+	{
+		/*char *EncoderTest = new char[255];
 		char *PneumaticsTest = new char[255];
 		char *VictorTest = new char[255];
 		char *SparkTest = new char[255];
@@ -174,8 +180,11 @@ public:
 			DriverStation::GetInstance().ReportError(MotorTest); // funnels button value into driver station
 		sprintf(Breakbeam, "DigitalInput: %f\n",  constant->Get("DIBreakbeam")); //outputs Breakbeam Sensor value
 			DriverStation::GetInstance().ReportError(Breakbeam); // funnels breakbeam value into driver station
-
-		}
+		*/
+		char shooterEncValue[255];
+		sprintf(shooterEncValue, "Shooter encoder: %d\n",  ShootingShooter->GetEncoder()); //outputs Breakbeam Sensor value
+					DriverStation::GetInstance().ReportError(shooterEncValue); // funnels breakbeam value into driver station
+	}
 
 };
 

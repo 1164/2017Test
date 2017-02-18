@@ -15,10 +15,6 @@ FourWheelDrive::FourWheelDrive(Constant *Blah) :
 {
 	constants = Blah;
 
-	//TestVictor1 = new VictorSP(constants->Get("VictorTest1"));//The Test VictorSP Motor Controller on PWM 1
-	//Spark0Controller = new Spark(constants->Get("ControllerSpark0"));//The test Spark Motor Controller on PWM 0
-	//TestMotor = new CANTalon(constants->Get("MotorTest"));// THE TEST CAN BUS TALON SRX MOTOR
-	Pneumatics = new Solenoid(constants->Get("SolenoidCAN"), constants->Get("PneumaticChannel"));//The Pneumatic solenoid on channel 4
 
 	leftFront = new VictorSP(constants->Get("frontLeftDrive"));
 	rightFront = new VictorSP(constants->Get("frontRightDrive"));
@@ -31,10 +27,9 @@ FourWheelDrive::FourWheelDrive(Constant *Blah) :
 	rightFront->SetInverted(constants->Get("rightFrontInvert")== 1);
 
 	Drive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
-	//Drive1 = new RobotDrive(leftFront,rightFront);
-	//Drive2 = new RobotDrive(leftBack, rightBack);
-	LeftDriveEncoder = new Encoder(constants->Get("LeftEncoderA"), constants->Get("LeftEncoderB"));
-	RightDriveEncoder = new Encoder(constants->Get("RightEncoderA"), constants->Get("RightEncoderB"));
+
+//	LeftDriveEncoder = new Encoder(constants->Get("LeftEncoderA"), constants->Get("LeftEncoderB"));
+//	RightDriveEncoder = new Encoder(constants->Get("RightEncoderA"), constants->Get("RightEncoderB"));
 	ShifterTest = false;
 	Shifter = new Solenoid(1, constants->Get("ShifterSolenoid"));
 	Shifter2 = new Solenoid(1, constants->Get("ShifterSolenoid2")); // CAT REMOVE COMMENT IF DOUBLE SOLENOID
@@ -110,21 +105,19 @@ void FourWheelDrive::arcadeDrive(float x, float y, bool isHighGear){
 
 }
 
-// test code for the pneumatic solenoid
 
-void FourWheelDrive::PneumaticSolenoid(float Pneu){
-	Pneumatics->Set(Pneu);
-}
 
 void FourWheelDrive::ResetEncoders(){
 
 }
 
 int FourWheelDrive::LeftEncoder(){
-	return LeftDriveEncoder->Get();
+	return 0;
+	//return LeftDriveEncoder->Get();
 }
 
 int FourWheelDrive::RightEncoder(){
-	return RightDriveEncoder->Get();
+	return 0;
+	//return RightDriveEncoder->Get();
 }
 

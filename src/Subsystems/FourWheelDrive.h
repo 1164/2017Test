@@ -27,18 +27,13 @@ class FourWheelDrive: public Subsystem
 {
 private:
 	RobotDrive *Drive;
-	RobotDrive *Drive1;
-	RobotDrive *Drive2;
-	CANTalon *TestMotor;//CAN bus TalonSRX
-	Solenoid *Pneumatics;//Solenoid pneumatics on channel 4
-	Spark *Spark0Controller;// PWM Spark Speed Controller
-	VictorSP *TestVictor1;//PWM Test Victor Speed Controller
+
 	VictorSP *leftBack; //VictorSP
 	VictorSP *rightBack;//VictorSP
 	VictorSP *rightFront;//VictorSP
 	VictorSP *leftFront;//VictorSP
-	Encoder *RightDriveEncoder;
-	Encoder *LeftDriveEncoder;
+	//Encoder *RightDriveEncoder;
+	//Encoder *LeftDriveEncoder;
 	Solenoid *Shifter;
 	Solenoid *Shifter2;
 	bool ShifterTest;

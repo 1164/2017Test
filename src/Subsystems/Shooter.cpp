@@ -12,34 +12,44 @@
 
 
 Shooter::Shooter(Constant *NASA) :
-	Subsystem("Shhooter"){
+	Subsystem("Shooter"){
 	constant = NASA;
-	shootermotor = new VictorSP(constant->Get("ShoooterMotor"));
-	Breakbeam = new DigitalInput(constant->Get("DIBreakbeam"));
-	//Test shooter program
-		/*if (x == 1) {
-				TestMotor->Set(0.5);
-			}
-			else if (x == 2) {
-				TestMotor->Set(0.7);
-			}
-			else if (x == 3) {
-				TestMotor->Set(0.9);
-			}
-			else if (x == 4) {
-				TestMotor->Set(1.0);
-			}
-			else {
-				TestMotor->Set(0.0);
-			}
-			*/
+	shooterMotor = new VictorSP(constant->Get("ShooterMotor"));
+	shooterEnc = new Encoder(constant->Get("ShootEncA"),
+								constant->Get("ShootEncB"));
+	plunger1 = new Solenoid(constant->Get("PCMCanID"), constant->Get("ShooterPlungerFw"));
+	plunger2 = new Solenoid(constant->Get("PCMCanID"), constant->Get("ShooterPlungerRv"));
+	shooterOn = false;
 }
-void Shooter::BreakbeamS(float BeamBreak){
-	if(Breakbeam->Get()==1){
-		//do something
-	}else{
-		//do something else
+
+
+// update
+// This function updates the state of the shooter, it has the code to turn on and off the shooter
+// at a constant speed. Also has the plunger code for the shooter by setting triggerButton
+//
+// @param shooterOnButton - button to set shooter on (toggles)
+// @param shooterOffButton - button to set shooter off (toggles)
+// @param triggerButton - when true plunges a ball into shooter, moves plunger back when false.
+void Shooter::update(bool shooterOnButton, bool shooterOffButton, bool triggerButton)
+{
+	if (shooterOffButton) {
+		shooterOn = false;
+	} else if (shooterOnButton) {
+		shooterOn = true;
 	}
+
+
+	if (shooterOn || constant->Get("TestMode") == 1) {
+		plunger1->Set(triggerButton);
+		plunger2->Set(!triggerButton);
+	}
+
+	if (shooterOn)
+		shooterMotor->Set(constant->Get("ShooterMotorSpeed"));
+	else
+		shooterMotor->Set(0);
 }
 
-
+int Shooter::GetEncoder() {
+	return shooterEnc->Get();
+}

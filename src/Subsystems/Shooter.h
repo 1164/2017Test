@@ -10,19 +10,26 @@
 #include <VictorSP.h>
 #include <Constant.h>
 #include <DigitalInput.h>
+#include <Solenoid.h>
+#include <Encoder.h>
 #include <iostream>
 #include "Commands/PIDSubsystem.h"
 class Shooter: public Subsystem{
 private:
 
-	VictorSP *shootermotor;
+	VictorSP *shooterMotor;
 	Constant *constant;
-	DigitalInput *Breakbeam;
+	Solenoid *plunger1;
+	Solenoid *plunger2;
+	Encoder *shooterEnc;
+	bool shooterOn;
+
 
 public:
-Shooter(Constant *NASA);
-void BreakbeamS(float BeamBreak);
+	Shooter(Constant *NASA);
+	void update(bool shooterOnButton, bool shooterOffButton, bool triggerButton);
 
+	int GetEncoder();
 };
 
 
