@@ -22,6 +22,8 @@ private:
 public:
     FuelMovement(Constant *Amy);
 
+    void Roller(bool RollerOn, bool RollerOff);
+
 };
 
 #endif /* SRC_SUBSYSTEMS_FUELMOVEMENT_H_ */

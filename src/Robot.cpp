@@ -13,6 +13,8 @@
 #include "Subsystems/FourWheelDrive.h"
 #include "Subsystems/Shooter.h"
 #include "Subsystems/NavxCode.h"
+#include "Subsystems/FuelMovement.h"
+#include "Subsystems/RobotLift.h"
 #include <Constant.h>
 #include <Joystick.h>
 #include <TalonSRX.h>
@@ -33,6 +35,8 @@ private:
 	FourWheelDrive *Drive;
 	Shooter *ShootingShooter;
 	NavxCode *Navx;
+	RobotLift *Lift;
+	FuelMovement *Roller;
 
 	frc::CameraServer* C1= CameraServer::GetInstance();
 public:
@@ -42,11 +46,13 @@ public:
 		frc::SmartDashboard::PutData("Auto Modes", &chooser);
 
 		constant = new Constant();
-		OperatorControl = new Joystick(0);
-		ShooterControl = new Joystick(1);
+		OperatorControl = new Joystick(constant->Get("OperatorJoystick"));
+		ShooterControl = new Joystick(constant->Get("DriverJoystick"));
 		Drive = new FourWheelDrive (constant);
 		ShootingShooter = new Shooter(constant);
 		Navx = new NavxCode(constant);
+		Lift = new RobotLift(constant);
+		Roller = new FuelMovement(constant);
 
 		// Create a Cameraserver Object
 		//C1 = new CameraServer::GetInstance();
@@ -123,12 +129,18 @@ public:
 
 		ShootingShooter->update(ShooterControl->GetRawButton(constant->Get("ShootOnButton")),
 								ShooterControl->GetRawButton(constant->Get("ShootOffButton")),
-								ShooterControl->GetRawButton(constant->Get("ShootTrigButton")));
+								ShooterControl->GetAxis((Joystick::AxisType)constant->Get("ShootTrigAxis")));
 
-		Drive->arcadeDrive(OperatorControl->GetAxis((Joystick::AxisType)constant->Get("MotorAxisY")),
-						OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
-						OperatorControl->GetRawButton(constant->Get("HighShiftButton")),
-						OperatorControl->GetRawButton(constant->Get("LowShiftButton")));
+		Drive->arcadeDrive(	OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYForward"))-
+							OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYBackward")),
+							OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
+							OperatorControl->GetPOV()==constant->Get("HighShiftButtonPOV"),
+							OperatorControl->GetPOV()==constant->Get("LowShiftButtonPOV"));
+
+		Roller->Roller(	ShooterControl->GetRawButton(constant->Get("RollerOnButton")),
+						ShooterControl->GetRawButton(constant->Get("RollerOffButton")));
+
+		Lift->Set(ShooterControl->GetAxis((Joystick::AxisType)constant->Get("LiftAxis")));
 		Navx->Gyro();
 
 
@@ -184,6 +196,11 @@ public:
 		char shooterEncValue[255];
 		sprintf(shooterEncValue, "Shooter encoder: %d\n",  ShootingShooter->GetEncoder()); //outputs Breakbeam Sensor value
 					DriverStation::GetInstance().ReportError(shooterEncValue); // funnels breakbeam value into driver station
+		char joystickPOVValue[255];
+		sprintf(joystickPOVValue, "Axis Value 1: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)2)); //outputs Breakbeam Sensor value
+					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
+		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)4)); //outputs Breakbeam Sensor value
+					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
 	}
 
 };

@@ -2,6 +2,8 @@ TestMode			1
 
 MotorTest			3
 
+OperatorJoystick	0
+DriverJoystick		1
 
 DriveSoleCh			12
 PCMCanID			1
@@ -39,16 +41,14 @@ RightEncoderB		3
 ShifterSolenoid		4
 ShifterSolenoid2	5
 
-HighShiftButton		7
-LowShiftButton		5
+HighShiftButtonPOV	270
+LowShiftButtonPOV	90
 
 DriveAxisX			0
-DriveAxisY			1
+DriveAxisYForward	4
+DriveAxisYBackward	2
 		
 MotorAxisY			1
-
-HighShiftButton		7
-LowShiftButton		5
 
 HighGearYGain		1
 HighGearXGain		-0.5
@@ -56,10 +56,22 @@ LowGearYGain		1
 LowGearXGain		-0.5
 
 ShooterMotorSpeed	0.9
-ShootOnButton		2
-ShootOffButton		4
-ShootTrigButton		8
+HalfSpeedShooter	.5
+FullSpeedShooter	1
+ShooterRpm			1500
+ShooterDeadband		100
+plungWaitSec		1
+ShooterDistancePerPulse	1
+ShootOnButton		6
+ShootOffButton		5
+ShootTrigAxis		3
 
+RollerOnButton		1
+RollerOffButton		3
 
 ShootEncA			0
 ShootEncB			1
+
+LifterTopLimitIOPort		12
+LifterBottomLimitIOPort		13
+LiftAxis			5

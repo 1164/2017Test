@@ -23,6 +23,8 @@ private:
 	Solenoid *plunger2;
 	Encoder *shooterEnc;
 	bool shooterOn;
+	int shooterState;
+	int count;
 
 
 public:
@@ -30,6 +32,11 @@ public:
 	void update(bool shooterOnButton, bool shooterOffButton, bool triggerButton);
 
 	int GetEncoder();
+
+private:
+
+	double bangBangController();
+	bool TriggerStateUpdate(bool triggerButton);
 };
 
 
