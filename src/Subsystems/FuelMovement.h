@@ -22,7 +22,7 @@ private:
 public:
     FuelMovement(Constant *Amy);
 
-    void Roller(bool RollerOn, bool RollerOff);
+    void Roller(bool RollerOn, bool RollerOff, bool BackButton);
 
 };
 
