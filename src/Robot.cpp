@@ -138,7 +138,8 @@ public:
 							OperatorControl->GetPOV()==constant->Get("LowShiftButtonPOV"));
 
 		Roller->Roller(	ShooterControl->GetRawButton(constant->Get("RollerOnButton")),
-						ShooterControl->GetRawButton(constant->Get("RollerOffButton")));
+						ShooterControl->GetRawButton(constant->Get("RollerOffButton")),
+						ShooterControl->GetRawButton(constant->Get("RollerBackButton")));
 
 		Lift->Set(ShooterControl->GetAxis((Joystick::AxisType)constant->Get("LiftAxis")));
 		Navx->Gyro();
@@ -199,7 +200,7 @@ public:
 		char joystickPOVValue[255];
 		sprintf(joystickPOVValue, "Axis Value 1: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)2)); //outputs Breakbeam Sensor value
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
-		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)4)); //outputs Breakbeam Sensor value
+		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)4)); //this is truly axis 3
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
 	}
 

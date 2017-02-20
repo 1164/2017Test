@@ -25,6 +25,7 @@ Shooter::Shooter(Constant *NASA) :
 	plunger2 = new Solenoid(constant->Get("PCMCanID"), constant->Get("ShooterPlungerRv"));
 	shooterOn = false;
 	shooterState = WAIT;
+	count = 0;
 }
 
 

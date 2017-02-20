@@ -68,6 +68,8 @@ ShootTrigAxis		3
 
 RollerOnButton		1
 RollerOffButton		3
+RollerBackButton	2
+FuelMovementInverted	0
 
 ShootEncA			0
 ShootEncB			1
@@ -75,3 +77,4 @@ ShootEncB			1
 LifterTopLimitIOPort		12
 LifterBottomLimitIOPort		13
 LiftAxis			5
+RobotLifterInverted	0

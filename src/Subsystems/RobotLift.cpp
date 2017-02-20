@@ -13,13 +13,17 @@ Subsystem("RobbotLift")
 {
 	constants = Sarah;
 	LiftSC = new VictorSP(constants->Get("RobotLifterMotor")); //PWM Channel
+	LiftSC->SetInverted(constants->Get("RobotLifterInverted")== 1);
 
 	LimitTop = new DigitalInput(constants->Get("LifterTopLimitIOPort"));
 	LimitBottom = new DigitalInput(constants->Get("LifterBottomLimitIOPort"));
 } // of RobotLift Constructor
 
 void RobotLift::Set(double climb){
-	if (LimitTop == 0 && LimitBottom == 0){
+	if (LimitTop == 0 && climb > 0){
+		LiftSC->Set(climb);
+	}
+	if (LimitBottom == 0 && climb < 0){
 		LiftSC->Set(climb);
 	}
 }
