@@ -18,6 +18,7 @@ Shooter::Shooter(Constant *NASA) :
 	Subsystem("Shooter"){
 	constant = NASA;
 	shooterMotor = new VictorSP(constant->Get("ShooterMotor"));
+	shooterMotor-> SetInverted(constant->Get("ShooterInvert")== 1);
 	shooterEnc = new Encoder(constant->Get("ShootEncA"),
 								constant->Get("ShootEncB"));
 	shooterEnc->SetDistancePerPulse(constant->Get("ShooterDistancePerPulse"));

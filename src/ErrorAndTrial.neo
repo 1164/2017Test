@@ -2,8 +2,8 @@ TestMode			1
 
 MotorTest			3
 
-OperatorJoystick	0
-DriverJoystick		1
+OperatorJoystick	4
+DriverJoystick		2
 
 DriveSoleCh			12
 PCMCanID			1
@@ -28,10 +28,10 @@ frontLeftDrive 		1
 backRightDrive 		2
 backLeftDrive 		0 
 
-leftBackInvert		0
-leftFrontInvert		0
-rightBackInvert		1
-rightFrontInvert	1
+leftBackInvert		1
+leftFrontInvert		1
+rightBackInvert		0
+rightFrontInvert	0
 
 LeftEncoderA		0
 LeftEncoderB		1
@@ -44,9 +44,9 @@ ShifterSolenoid2	5
 HighShiftButtonPOV	270
 LowShiftButtonPOV	90
 
-DriveAxisX			0
-DriveAxisYForward	4
-DriveAxisYBackward	2
+DriveAxisX			2
+DriveAxisYForward	1
+DriveAxisYBackward	0
 		
 MotorAxisY			1
 
@@ -65,10 +65,11 @@ ShooterDistancePerPulse	1
 ShootOnButton		6
 ShootOffButton		5
 ShootTrigAxis		3
+ShooterInvert		1
 
-RollerOnButton		1
-RollerOffButton		3
-RollerBackButton	2
+RollerOnButton		2
+RollerOffButton		1
+RollerBackButton	3
 FuelMovementInverted	0
 
 ShootEncA			0

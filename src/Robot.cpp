@@ -131,8 +131,7 @@ public:
 								ShooterControl->GetRawButton(constant->Get("ShootOffButton")),
 								ShooterControl->GetAxis((Joystick::AxisType)constant->Get("ShootTrigAxis")));
 
-		Drive->arcadeDrive(	OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYForward"))-
-							OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYBackward")),
+		Drive->arcadeDrive(	-OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYForward")),
 							OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
 							OperatorControl->GetPOV()==constant->Get("HighShiftButtonPOV"),
 							OperatorControl->GetPOV()==constant->Get("LowShiftButtonPOV"));
@@ -144,6 +143,11 @@ public:
 		Lift->Set(ShooterControl->GetAxis((Joystick::AxisType)constant->Get("LiftAxis")));
 		Navx->Gyro();
 
+		char joystickPOVValue[255];
+		sprintf(joystickPOVValue, "Axis Value 1: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)2)); //outputs Breakbeam Sensor value
+					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
+		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)4)); //this is truly axis 3
+					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
 
 	}
 
@@ -198,9 +202,9 @@ public:
 		sprintf(shooterEncValue, "Shooter encoder: %d\n",  ShootingShooter->GetEncoder()); //outputs Breakbeam Sensor value
 					DriverStation::GetInstance().ReportError(shooterEncValue); // funnels breakbeam value into driver station
 		char joystickPOVValue[255];
-		sprintf(joystickPOVValue, "Axis Value 1: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)2)); //outputs Breakbeam Sensor value
+		sprintf(joystickPOVValue, "Axis Value 1: %f\n",  ShooterControl->GetAxis((Joystick::AxisType)0)); //outputs Breakbeam Sensor value
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
-		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)4)); //this is truly axis 3
+		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  ShooterControl->GetAxis((Joystick::AxisType)0)); //this is truly axis 3
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
 	}
 
