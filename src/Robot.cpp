@@ -131,12 +131,12 @@ public:
 								ShooterControl->GetRawButton(constant->Get("ShootOffButton")),
 								ShooterControl->GetRawButton(constant->Get("ShootTrigButton")));
 
-		Drive->arcadeDrive(	-OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYForward")),
-							OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
+		Drive->arcadeDrive(	OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
+							-OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYForward")),
 							OperatorControl->GetRawButton(constant->Get("HighShiftButtonPOV")),
 							OperatorControl->GetRawButton(constant->Get("LowShiftButtonPOV")));
 
-		Drive->Forward(	OperatorControl->GetRawButton(constant->Get("ForwaqqqhrdFaceButton")),
+		Drive->Forward(	OperatorControl->GetRawButton(constant->Get("ForwardFaceButton")),
 						OperatorControl->GetRawButton(constant->Get("BackwardFaceButton")));
 
 		Roller->Roller(	ShooterControl->GetRawButton(constant->Get("RollerOnButton")),

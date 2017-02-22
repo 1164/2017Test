@@ -45,7 +45,7 @@ void Shooter::update(bool shooterOnButton, bool shooterOffButton, bool triggerBu
 		shooterOn = true;
 	}
 
-	if (TriggerStateUpdate(triggerButton)) {
+	if (!TriggerStateUpdate(triggerButton)) {
 		plunger1->Set(true);
 		plunger2->Set(false);
 	}
@@ -94,12 +94,15 @@ bool Shooter::TriggerStateUpdate(bool triggerButton) {
 	}
 	else if (shooterState == SHOOT){
 		count++;
-		if (count >= 50*constant->Get("plungWaitSec")){
+		if (count >= 25*constant->Get("plungWaitSec")){
+			return false;
+		}
+		else if (count >= 50*constant->Get("plungWaitSec")){
 			shooterState = WAIT;
-			return true;
+			return false;
 		}
 		else {
-			return false;
+			return true;
 		}
 	}
 	return false; //This should never be reached

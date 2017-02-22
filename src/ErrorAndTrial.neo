@@ -59,15 +59,15 @@ LowGearYGain		0.5
 LowGearXGain		-0.1
 
 ShooterMotorSpeed	0.9
-HalfSpeedShooter	.5
+HalfSpeedShooter	0
 FullSpeedShooter	1
 ShooterRpm			1500
 ShooterDeadband		100
 plungWaitSec		1
-ShooterDistancePerPulse	1
+ShooterDistancePerPulse	0.02
 ShootOnButton		6
 ShootOffButton		5
-ShootTrigButton		3
+ShootTrigButton		8
 ShooterInvert		1
 
 RollerOnButton		2
