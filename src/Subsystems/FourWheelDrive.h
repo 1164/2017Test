@@ -49,6 +49,7 @@ public:
 	void ResetEncoders();
 	int LeftEncoder();
 	int RightEncoder();
+	void Forward(bool forwardFace, bool backwardFace);
 
 	//void InitDefaultCommand();
 

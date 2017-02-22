@@ -20,11 +20,14 @@ Subsystem("RobbotLift")
 } // of RobotLift Constructor
 
 void RobotLift::Set(double climb){
-	if (LimitTop == 0 && climb > 0){
+	if (climb > 0.05 && LimitTop->Get()){
 		LiftSC->Set(climb);
 	}
-	if (LimitBottom == 0 && climb < 0){
+	else if(climb < -0.05 && LimitBottom->Get()){
 		LiftSC->Set(climb);
+	}
+	else{
+		LiftSC->Set(0.0);
 	}
 }
 

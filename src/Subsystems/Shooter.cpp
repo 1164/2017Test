@@ -103,4 +103,29 @@ bool Shooter::TriggerStateUpdate(bool triggerButton) {
 		}
 	}
 	return false; //This should never be reached
+
+	/*if (shooterState == WAIT){
+		if ((triggerButton == true)
+				&& (constant->Get("ShooterRpm")-constant->Get("ShooterDeadband") < shooterEnc->GetRate())
+				&& (shooterEnc->GetRate() < constant->Get("ShooterRpm")+constant->Get("ShooterDeadband")))
+		{
+			shooterState = SHOOT;
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	else if(shooterState == SHOOT){
+		if ((triggerButton == true)){
+			return false;
+		}
+		else{
+			shooterState = WAIT;
+			return true;
+		}
+	}
+	else{
+		return true; //Should never be reached
+	}*/
 }

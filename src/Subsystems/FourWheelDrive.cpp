@@ -121,3 +121,19 @@ int FourWheelDrive::RightEncoder(){
 	//return RightDriveEncoder->Get();
 }
 
+void FourWheelDrive::Forward(bool forwardFace, bool backwardFace){
+	if (forwardFace){
+		arcadeDrive(0, 0, false);
+		leftBack->SetInverted(constants->Get("leftBackInvert")== 1);
+		leftFront->SetInverted(constants->Get("leftFrontInvert")== 1);
+		rightBack->SetInverted(constants->Get("rightBackInvert")== 1);
+		rightFront->SetInverted(constants->Get("rightFrontInvert")== 1);
+	}
+	else if (backwardFace){
+		arcadeDrive(0, 0, false);
+		leftBack->SetInverted(constants->Get("leftBackInvert")== 0);
+		leftFront->SetInverted(constants->Get("leftFrontInvert")== 0);
+		rightBack->SetInverted(constants->Get("rightBackInvert")== 0);
+		rightFront->SetInverted(constants->Get("rightFrontInvert")== 0);
+	}
+}

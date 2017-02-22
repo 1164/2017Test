@@ -18,10 +18,9 @@ private:
 	Constant *constants;
 	VictorSP *LiftSC;
 
+public:
 	DigitalInput *LimitTop;
 	DigitalInput *LimitBottom;
-
-public:
     RobotLift(Constant *Sarah);
 
     void Set(double climb);
