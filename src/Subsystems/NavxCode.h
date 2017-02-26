@@ -25,6 +25,8 @@ public:
     NavxCode(Constant *Lucy);
 
     void Gyro();
+    double GetPitchAngle();
+    double GetRollAngle();
 
 };
 

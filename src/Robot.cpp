@@ -19,6 +19,8 @@
 #include <Joystick.h>
 #include <TalonSRX.h>
 #include <RobotDrive.h>
+#include "Autonomous/AutoBaseLine.h"
+#include "Autonomous/AutoTurnToPilot.h"
 
 
 class Robot: public frc::IterativeRobot {
@@ -30,13 +32,17 @@ private:
 	std::string autoSelected;
 
 	Joystick *OperatorControl;
-	Joystick *ShooterControl;
+	Joystick *DriverControl;
 	Constant *constant;
 	FourWheelDrive *Drive;
 	Shooter *ShootingShooter;
 	NavxCode *Navx;
 	RobotLift *Lift;
 	FuelMovement *Roller;
+
+	AutoBaseLine *ABL=NULL;
+	AutoTurnToPilot *ATTPLeft;
+	AutoTurnToPilot *ATTPRight;
 
 	frc::CameraServer* C1= CameraServer::GetInstance();
 public:
@@ -46,8 +52,8 @@ public:
 		frc::SmartDashboard::PutData("Auto Modes", &chooser);
 
 		constant = new Constant();
+		DriverControl = new Joystick(constant->Get("DriverJoystick"));
 		OperatorControl = new Joystick(constant->Get("OperatorJoystick"));
-		ShooterControl = new Joystick(constant->Get("DriverJoystick"));
 		Drive = new FourWheelDrive (constant);
 		ShootingShooter = new Shooter(constant);
 		Navx = new NavxCode(constant);
@@ -82,6 +88,14 @@ public:
 		} else {
 			// Default Auto goes here
 		}
+		 ABL=new AutoBaseLine(Drive,constant);
+		 ATTPLeft = new AutoTurnToPilot(Drive,Navx,constant,true);
+		 ATTPRight = new AutoTurnToPilot(Drive,Navx,constant,false);
+
+		 Scheduler::GetInstance()->AddCommand((Command *)ABL);
+		// Scheduler::GetInstance()->AddCommand((Command *)ATTPLeft);
+		// Scheduler::GetInstance()->AddCommand((Command *)ATTPRight);
+
 	}
 
 	void AutonomousPeriodic() {
@@ -90,9 +104,12 @@ public:
 		} else {
 			// Default Auto goes here
 		}
+		Scheduler::GetInstance()->Run();
 	}
 
 	void TeleopInit() {
+		//  We need to remove any commands that may be on the scheduler that are autonmous only
+		if ( ABL != NULL ) Scheduler::GetInstance()->Remove((Command *)ABL); //  Remove the autonomous
 
 	}
 
@@ -126,32 +143,36 @@ public:
 		}
 		*/
 		//Drive->arcadeDrive(value, 0.0, false, false);
+		char *ENCstring = new char[255];
 
-		ShootingShooter->update(ShooterControl->GetRawButton(constant->Get("ShootOnButton")),
-								ShooterControl->GetRawButton(constant->Get("ShootOffButton")),
-								ShooterControl->GetRawButton(constant->Get("ShootTrigButton")));
+		sprintf(ENCstring, "Shooter Encoder %f\n",ShootingShooter->GetRate() ); //outputs Encoder reading
+		DriverStation::GetInstance().ReportError(ENCstring); // funnels Encoder reading into driver station
 
-		Drive->arcadeDrive(	OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
-							-OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYForward")),
-							OperatorControl->GetRawButton(constant->Get("HighShiftButtonPOV")),
-							OperatorControl->GetRawButton(constant->Get("LowShiftButtonPOV")));
+		ShootingShooter->update(OperatorControl->GetRawButton(constant->Get("ShootOnButton")),
+								OperatorControl->GetRawButton(constant->Get("ShootOffButton")),
+								OperatorControl->GetRawButton(constant->Get("ShootTrigButton")));
 
-		Drive->Forward(	OperatorControl->GetRawButton(constant->Get("ForwardFaceButton")),
-						OperatorControl->GetRawButton(constant->Get("BackwardFaceButton")));
+		Drive->arcadeDrive(	DriverControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisX")),
+							-DriverControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisYForward")),
+							DriverControl->GetRawButton(constant->Get("HighShiftButtonPOV")),
+							DriverControl->GetRawButton(constant->Get("LowShiftButtonPOV")));
 
-		Roller->Roller(	ShooterControl->GetRawButton(constant->Get("RollerOnButton")),
-						ShooterControl->GetRawButton(constant->Get("RollerOffButton")),
-						ShooterControl->GetRawButton(constant->Get("RollerBackButton")));
+		Drive->Forward(	DriverControl->GetRawButton(constant->Get("ForwardFaceButton")),
+						DriverControl->GetRawButton(constant->Get("BackwardFaceButton")));
 
-		Lift->Set(ShooterControl->GetAxis((Joystick::AxisType)constant->Get("LiftAxis")));
-		Navx->Gyro();
+		Roller->Roller(	OperatorControl->GetRawButton(constant->Get("RollerOnButton")),
+						OperatorControl->GetRawButton(constant->Get("RollerOffButton")),
+						OperatorControl->GetRawButton(constant->Get("RollerBackButton")));
 
+		Lift->Set(OperatorControl->GetAxis((Joystick::AxisType)constant->Get("LiftAxis")));
+		//Navx->Gyro();
+/*
 		char joystickPOVValue[255];
 		sprintf(joystickPOVValue, "Axis Value 1: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)2)); //outputs Breakbeam Sensor value
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
 		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)4)); //this is truly axis 3
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
-
+*/
 	}
 
 	void TestPeriodic() {
@@ -204,16 +225,22 @@ public:
 		/*char shooterEncValue[255];
 		sprintf(shooterEncValue, "Shooter encoder: %d\n",  ShootingShooter->GetEncoder()); //outputs Breakbeam Sensor value
 					DriverStation::GetInstance().ReportError(shooterEncValue); // funnels breakbeam value into driver station*/
-		char joystickPOVValue[255];
-		sprintf(joystickPOVValue, "Axis Value 1: %f\n",  ShooterControl->GetAxis((Joystick::AxisType)0)); //outputs Breakbeam Sensor value
-					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
-		sprintf(joystickPOVValue, "Axis Value 2: %f\n",  ShooterControl->GetAxis((Joystick::AxisType)1)); //this is truly axis 3
-					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
+		//char joystickPOVValue[255];
+		//sprintf(joystickPOVValue, "Axis Value 1: %f\n",  ShooterControl->GetAxis((Joystick::AxisType)0)); //outputs Breakbeam Sensor value
+		//			DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
+		//sprintf(joystickPOVValue, "Axis Value 2: %f\n",  ShooterControl->GetAxis((Joystick::AxisType)1)); //this is truly axis 3
+		//			DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
 		/*char joystickPOVValue[255];
 		sprintf(joystickPOVValue, "Limit 1: %d\n",  Lift->LimitTop->Get()); //outputs Breakbeam Sensor value
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station
 		sprintf(joystickPOVValue, "Limit 2: %d\n",  Lift->LimitBottom->Get()); //this is truly axis 3
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station*/
+
+		//char *NAVXstring = new char[255];
+
+		//sprintf(NAVXstring, "NAVX Pitch %f   NAVX Roll %f\n",  Navx->GetPitchAngle(), Navx->GetRollAngle()); //outputs Encoder reading
+		//DriverStation::GetInstance().ReportError(NAVXstring); // funnels Encoder reading into driver station
+
 	}
 
 };

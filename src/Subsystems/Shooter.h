@@ -32,6 +32,7 @@ public:
 	void update(bool shooterOnButton, bool shooterOffButton, bool triggerButton);
 
 	int GetEncoder();
+	double GetRate();
 
 private:
 

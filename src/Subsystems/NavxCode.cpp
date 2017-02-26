@@ -53,6 +53,15 @@ void NavxCode::Gyro(){
 
 } // of Gyro
 
+double NavxCode::GetPitchAngle(){
+	return (ahrs->GetPitch());
+}
+
+double NavxCode::GetRollAngle(){
+	return (ahrs->GetRoll());
+}
+
+
 
 
 

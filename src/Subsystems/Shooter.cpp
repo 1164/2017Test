@@ -67,14 +67,22 @@ void Shooter::update(bool shooterOnButton, bool shooterOffButton, bool triggerBu
 //
 // @return - returns the motor speed of the shooter.
 double Shooter::bangBangController() {
+	return constant ->Get ("FullSpeedShooter");
+
+	/*
 	if (shooterEnc->GetRate() > constant->Get ("ShooterRpm"))
 		return constant ->Get ("HalfSpeedShooter");
 	else
 		return constant ->Get ("FullSpeedShooter");
+		*/
 }
 
 int Shooter::GetEncoder() {
 	return shooterEnc->Get();
+}
+
+double Shooter::GetRate() {
+	return shooterEnc->GetRate();
 }
 
 bool Shooter::TriggerStateUpdate(bool triggerButton) {
@@ -87,22 +95,23 @@ bool Shooter::TriggerStateUpdate(bool triggerButton) {
 		}
 		return false;
 	}
-	else if (shooterState == INIT_SHOOT){
+	else if (shooterState == INIT_SHOOT){ // plunger down
 		count = 0;
 		shooterState = SHOOT;
 		return true;
 	}
-	else if (shooterState == SHOOT){
+	else if (shooterState == SHOOT){ //plunger is down for 25 units
 		count++;
-		if (count >= 25*constant->Get("plungWaitSec")){
-			return false;
-		}
-		else if (count >= 50*constant->Get("plungWaitSec")){
+
+		if (count >= 50*constant->Get("plungWaitSec")){  //enable shooting after 50 units waits, plunger is up
 			shooterState = WAIT;
 			return false;
 		}
+		else if (count >= 25*constant->Get("plungWaitSec")){ // plunger up but no shooting after 25 units (of beeig down)
+			return false;
+		}
 		else {
-			return true;
+			return true; // plunger is down upto 25 wait units
 		}
 	}
 	return false; //This should never be reached
@@ -131,4 +140,4 @@ bool Shooter::TriggerStateUpdate(bool triggerButton) {
 	else{
 		return true; //Should never be reached
 	}*/
-}
+} // of Trigger State update

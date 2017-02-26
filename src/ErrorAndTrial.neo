@@ -1,3 +1,4 @@
+
 TestMode			1
 
 MotorTest			3
@@ -54,17 +55,17 @@ BackwardFaceButton	5
 MotorAxisY			1
 
 HighGearYGain		1
-HighGearXGain		-0.1
+HighGearXGain		-0.3
 LowGearYGain		0.5
-LowGearXGain		-0.1
+LowGearXGain		-0.3
 
 ShooterMotorSpeed	0.9
-HalfSpeedShooter	0
-FullSpeedShooter	1
-ShooterRpm			1500
-ShooterDeadband		100
+HalfSpeedShooter	0.95
+FullSpeedShooter	1.0
+ShooterRpm			1650
+ShooterDeadband		200
 plungWaitSec		1
-ShooterDistancePerPulse	0.02
+ShooterDistancePerPulse	1.00
 ShootOnButton		6
 ShootOffButton		5
 ShootTrigButton		8
@@ -82,3 +83,7 @@ LifterTopLimitIOPort		2
 LifterBottomLimitIOPort		3
 LiftAxis			3
 RobotLifterInverted	0
+
+
+AutoBaseLineEncoder  20
+AutoTurnPilotAngle   30
