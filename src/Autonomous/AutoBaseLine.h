@@ -30,7 +30,7 @@
 
 namespace frc {
 
-class AutoBaseLine : Command  {
+class AutoBaseLine : public Command  {
 public:
 	AutoBaseLine(FourWheelDrive *FWD, Constant* C);
 	virtual ~AutoBaseLine();

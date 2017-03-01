@@ -27,6 +27,8 @@ public:
     void Gyro();
     double GetPitchAngle();
     double GetRollAngle();
+    double GetYawAngle();
+    void ResetYaw();
 
 };
 

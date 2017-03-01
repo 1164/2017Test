@@ -33,7 +33,7 @@ private:
 	VictorSP *rightFront;//VictorSP
 	VictorSP *leftFront;//VictorSP
 	//Encoder *RightDriveEncoder;
-	//Encoder *LeftDriveEncoder;
+	Encoder *LeftDriveEncoder;
 	Solenoid *Shifter;
 	Solenoid *Shifter2;
 	bool ShifterTest;

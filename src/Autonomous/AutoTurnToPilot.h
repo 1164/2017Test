@@ -27,7 +27,7 @@
 namespace frc {
 
 
-class AutoTurnToPilot : Command {
+class AutoTurnToPilot : public Command {
 public:
 	AutoTurnToPilot(FourWheelDrive *FWD, NavxCode *N,Constant * C, bool left);
 	virtual ~AutoTurnToPilot();

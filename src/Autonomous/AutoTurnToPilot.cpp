@@ -14,11 +14,12 @@ AutoTurnToPilot::AutoTurnToPilot(FourWheelDrive *FWD, NavxCode *N,Constant * C, 
 	running_=true;
 	constant=C;
 	mynavx = N;
+	mynavx->ResetYaw();
 
 	if (left)
-	  target_angle=mynavx->GetRollAngle() + C->Get("AutoTurnPilotAngle");
+	  target_angle=mynavx->GetYawAngle() - C->Get("AutoTurnPilotAngle");
 	else
-		target_angle=mynavx->GetRollAngle() - C->Get("AutoTurnPilotAngle");
+		target_angle=mynavx->GetYawAngle() + C->Get("AutoTurnPilotAngle");
 
 }
 
@@ -50,17 +51,19 @@ void AutoTurnToPilot::Execute(){
 
 	double window=2.0;
 
-	double difference=target_angle - mynavx->GetRollAngle();
+	double difference=target_angle - mynavx->GetYawAngle();
 	double direction;
 
 	if (difference < 0) direction =-1.0;
 	else direction = 1.0;
 
+	direction=direction*-1;
+
 	// Turn Autonomously until we get to our target angle
 
 	//  get the Drive encoder --- if we get to the encoder value then we are done, other wise drive
-	if ((target_angle  < (mynavx->GetRollAngle() + window))   &&
-		(target_angle > (mynavx->GetRollAngle() - window)) ) running_=false;
+	if ((target_angle  < (mynavx->GetYawAngle() + window))   &&
+		(target_angle > (mynavx->GetYawAngle() - window)) ) running_=false;
 
 	else    Drive->arcadeDrive(direction*0.25,0.,false,false);
 

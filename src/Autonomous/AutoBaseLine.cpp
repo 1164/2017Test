@@ -46,9 +46,15 @@ void AutoBaseLine::Initialize()
 void AutoBaseLine::Execute(){
 
 	// Drive Autonomously until we get to our spot
+	char myst[200];
+
+	sprintf(myst,"Encoder Constant is %f, Encoder is %d\n",
+			constants->Get("AutoBaseLineEncoder"),Drive->LeftEncoder());
+
+	perror(myst);
 
 	//  get the Drive encoder --- if we get to the encoder value then we are done, other wise drive
 	if (constants->Get("AutoBaseLineEncoder") < Drive->LeftEncoder()) running_=false;
-	else    Drive->arcadeDrive(0,0.5,false,false);
+	else    Drive->arcadeDrive(0,-0.5,false,false);
 
 }

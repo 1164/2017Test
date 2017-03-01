@@ -21,12 +21,15 @@
 #include <RobotDrive.h>
 #include "Autonomous/AutoBaseLine.h"
 #include "Autonomous/AutoTurnToPilot.h"
+#include "Autonomous/BaseLineTurnLeft.h"
 
 
 class Robot: public frc::IterativeRobot {
 private:
 	frc::LiveWindow* lw = LiveWindow::GetInstance();
 	frc::SendableChooser<std::string> chooser;
+
+
 	const std::string autoNameDefault = "Default";
 	const std::string autoNameCustom = "My Auto";
 	std::string autoSelected;
@@ -40,14 +43,22 @@ private:
 	RobotLift *Lift;
 	FuelMovement *Roller;
 
+	int AutoControl=0;
+
 	AutoBaseLine *ABL=NULL;
 	AutoTurnToPilot *ATTPLeft;
 	AutoTurnToPilot *ATTPRight;
+    BaseLineTurnLeft * BLTL;
+
 
 	frc::CameraServer* C1= CameraServer::GetInstance();
+
 public:
 	void RobotInit() {
+
+
 		chooser.AddDefault(autoNameDefault, autoNameDefault);
+		chooser.AddDefault("Hello", "Hello1");
 		chooser.AddObject(autoNameCustom, autoNameCustom);
 		frc::SmartDashboard::PutData("Auto Modes", &chooser);
 
@@ -65,6 +76,9 @@ public:
 		C1->AddAxisCamera ("axis-camera");
 		Drive->ResetEncoders();
 
+
+
+
 	}
 
 	/*
@@ -80,21 +94,47 @@ public:
 	 */
 	void AutonomousInit() override {
 		autoSelected = chooser.GetSelected();
-		// std::string autoSelected = SmartDashboard::GetString("Auto Selector", autoNameDefault);
+
+		std::string autoSelected = SmartDashboard::GetString("Auto Selector", autoNameDefault);
 		std::cout << "Auto selected: " << autoSelected << std::endl;
+		DriverStation::GetInstance().ReportError(autoSelected);
+
+		ABL=new AutoBaseLine(Drive,constant);
+		BLTL=new BaseLineTurnLeft(Drive,Navx,constant,true);
+
+		switch (AutoControl/10) {
+			case 0: DriverStation::GetInstance().ReportError("Running Level 0 Baseline Only\n");
+
+			      Scheduler::GetInstance()->AddCommand((Command *)ABL);
+			       break;
+			case 1: DriverStation::GetInstance().ReportError("Running Level 1 Base Line Turn Left\n");
+			        Scheduler::GetInstance()->AddCommand((Command *)BLTL);
+					break;
+			case 2: DriverStation::GetInstance().ReportError("Running Level 2\n");
+							break;
+			case 3: DriverStation::GetInstance().ReportError("Running Level 3\n");
+								break;
+			case 4: DriverStation::GetInstance().ReportError("Running Level 4\n");
+								break;
+		}
+
+
 
 		if (autoSelected == autoNameCustom) {
 			// Custom Auto goes here
 		} else {
 			// Default Auto goes here
 		}
-		 ABL=new AutoBaseLine(Drive,constant);
-		 ATTPLeft = new AutoTurnToPilot(Drive,Navx,constant,true);
-		 ATTPRight = new AutoTurnToPilot(Drive,Navx,constant,false);
+		// ABL=new AutoBaseLine(Drive,constant);
+		// ATTPLeft = new AutoTurnToPilot(Drive,Navx,constant,true);
+		 //ATTPRight = new AutoTurnToPilot(Drive,Navx,constant,false);
 
-		 Scheduler::GetInstance()->AddCommand((Command *)ABL);
-		// Scheduler::GetInstance()->AddCommand((Command *)ATTPLeft);
-		// Scheduler::GetInstance()->AddCommand((Command *)ATTPRight);
+		 //Scheduler::GetInstance()->AddCommand((Command *)ABL);
+		 Scheduler::GetInstance()->AddCommand((Command *)ATTPLeft);
+		 //Scheduler::GetInstance()->AddCommand((Command *)ATTPRight);
+
+
+
 
 	}
 
@@ -202,16 +242,39 @@ public:
 
 	void DisabledPeriodic()
 	{
-		/*char *EncoderTest = new char[255];
-		char *PneumaticsTest = new char[255];
+		//char *EncoderTest = new char[255];
+		/*char *PneumaticsTest = new char[255];
 		char *VictorTest = new char[255];
 		char *SparkTest = new char[255];
 		char *MotorTest = new char[255];
 		char *Breakbeam = new char[255];
 
-		sprintf(EncoderTest, "Encoder value: %d\n",  Drive->LeftEncoder()); //outputs Encoder reading
-			DriverStation::GetInstance().ReportError(EncoderTest); // funnels Encoder reading into driver station
-		sprintf(PneumaticsTest, "pnue value: %f\n",  constant->Get("PneumaticChannel")); //outputs solenoid reading
+		*/
+
+
+		if (DriverControl->GetRawButton(10))
+			AutoControl=(AutoControl+1)%50;
+
+
+
+		switch (AutoControl/10) {
+		case 0: DriverStation::GetInstance().ReportError("Level 0 Baseline Only\n");
+		       break;
+		case 1: DriverStation::GetInstance().ReportError("Level 1  Base Line Turn Left\n");
+				break;
+		case 2: DriverStation::GetInstance().ReportError("Level 2\n");
+						break;
+		case 3: DriverStation::GetInstance().ReportError("Level 3\n");
+							break;
+		case 4: DriverStation::GetInstance().ReportError("Level 4\n");
+							break;
+
+
+		}
+
+	//	sprintf(EncoderTest, "Encoder value: %d\n",  Drive->LeftEncoder()); //outputs Encoder reading
+	//		DriverStation::GetInstance().ReportError(EncoderTest); // funnels Encoder reading into driver station
+	/*	sprintf(PneumaticsTest, "pnue value: %f\n",  constant->Get("PneumaticChannel")); //outputs solenoid reading
 			DriverStation::GetInstance().ReportError(PneumaticsTest); // funnels solenoid reading into driver station
 		sprintf(VictorTest, "MotorOutput: %f\n",  OperatorControl->GetAxis((Joystick::AxisType)constant->Get("DriveAxisY"))); //outputs button value
 			DriverStation::GetInstance().ReportError(VictorTest); // funnels button value into driver station
@@ -237,8 +300,11 @@ public:
 					DriverStation::GetInstance().ReportError(joystickPOVValue); // funnels breakbeam value into driver station*/
 
 		//char *NAVXstring = new char[255];
+		//Navx->Gyro();
 
-		//sprintf(NAVXstring, "NAVX Pitch %f   NAVX Roll %f\n",  Navx->GetPitchAngle(), Navx->GetRollAngle()); //outputs Encoder reading
+		//sprintf(NAVXstring, "NAVX Pitch %f   NAVX Roll %f  NAVX YAW %f\n",
+		//		Navx->GetPitchAngle(), Navx->GetRollAngle()
+		//		Navx->GetYawAngle()); //outputs Encoder reading
 		//DriverStation::GetInstance().ReportError(NAVXstring); // funnels Encoder reading into driver station
 
 	}

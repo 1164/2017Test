@@ -103,11 +103,11 @@ bool Shooter::TriggerStateUpdate(bool triggerButton) {
 	else if (shooterState == SHOOT){ //plunger is down for 25 units
 		count++;
 
-		if (count >= 50*constant->Get("plungWaitSec")){  //enable shooting after 50 units waits, plunger is up
+		if (count >= 50*constant->Get("plungUpTime")+ 50*constant->Get("plungDownTime")){  //enable shooting after 50 units waits, plunger is up
 			shooterState = WAIT;
 			return false;
 		}
-		else if (count >= 25*constant->Get("plungWaitSec")){ // plunger up but no shooting after 25 units (of beeig down)
+		else if (count >= 50*constant->Get("plungDownTime")){ // plunger up but no shooting after 25 units (of being down)
 			return false;
 		}
 		else {

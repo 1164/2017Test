@@ -44,10 +44,11 @@ void NavxCode::Gyro(){
 
 	double pitchAngleDegrees = ahrs->GetPitch();
     double rollAngleDegrees = ahrs->GetRoll();
+    double yawAngleDegrees = ahrs->GetYaw();
 
     char *GyroString = new char[255];
 
-    sprintf(GyroString, "Gyro value: %f %f\n", pitchAngleDegrees,rollAngleDegrees  ); //outputs Encoder reading
+    sprintf(GyroString, "Gyro value: putch %f roll  %f yaw %f\n", pitchAngleDegrees,rollAngleDegrees, yawAngleDegrees  ); //outputs Encoder reading
     					DriverStation::GetInstance().ReportError(GyroString); // funnels Encoder reading into driver station
 
 
@@ -61,6 +62,14 @@ double NavxCode::GetRollAngle(){
 	return (ahrs->GetRoll());
 }
 
+double NavxCode::GetYawAngle(){
+	return (ahrs->GetYaw());
+}
+
+void NavxCode::ResetYaw(){
+	ahrs->Reset();
+	return;
+}
 
 
 

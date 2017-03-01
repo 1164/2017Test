@@ -28,8 +28,10 @@ FourWheelDrive::FourWheelDrive(Constant *Blah) :
 
 	Drive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
 
-//	LeftDriveEncoder = new Encoder(constants->Get("LeftEncoderA"), constants->Get("LeftEncoderB"));
+	LeftDriveEncoder = new Encoder(constants->Get("LeftEncoderA"), constants->Get("LeftEncoderB"));
+	LeftDriveEncoder->SetDistancePerPulse(constants->Get("LeftEncoderDistancePerPulse"));
 //	RightDriveEncoder = new Encoder(constants->Get("RightEncoderA"), constants->Get("RightEncoderB"));
+//	RightDriveEncoder->SetDistancePerPulse(constants->Get("RightEncoderDistancePerPulse"));
 	ShifterTest = false;
 	Shifter = new Solenoid(1, constants->Get("ShifterSolenoid"));
 	Shifter2 = new Solenoid(1, constants->Get("ShifterSolenoid2")); // CAT REMOVE COMMENT IF DOUBLE SOLENOID
@@ -108,12 +110,13 @@ void FourWheelDrive::arcadeDrive(float x, float y, bool isHighGear){
 
 
 void FourWheelDrive::ResetEncoders(){
-
+	LeftDriveEncoder->Reset();
 }
 
 int FourWheelDrive::LeftEncoder(){
-	return 0;
-	//return LeftDriveEncoder->Get();
+	//return 0;
+	//LeftDriveEncoder->GetEncodingScale();
+	return LeftDriveEncoder->Get();
 }
 
 int FourWheelDrive::RightEncoder(){
